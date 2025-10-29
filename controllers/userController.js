@@ -1,7 +1,8 @@
 const path = require('path');
 const User = require("../models/usermodel");
-// Resolve validation schema relative to project root so it works both locally and on Render/Vercel
-const userValidationSchema = require(path.join(process.cwd(), 'Validations', 'UserValidation'));
+// Resolve validation schema relative to the controller file so it works
+// when the service root differs (Render may use Backend as project root).
+const userValidationSchema = require(path.join(__dirname, '..', '..', 'Validations', 'UserValidation'));
 
 // ✅ Get all users
 exports.getAllUsers = (req, res) => {

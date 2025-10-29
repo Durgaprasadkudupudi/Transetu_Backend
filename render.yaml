@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: Transetu_Backend
+    env: node
+    plan: free
+    branch: main
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    disk: 1024
+    instanceType: "micro"
+    envVars: []

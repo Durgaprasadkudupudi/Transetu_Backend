@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const connectDB = () => {
-  const MONGO_URI = "mongodb+srv://<db_username>:<db_password>@gcc.ddjem.mongodb.net/?appName=GCC";
+  const MONGO_URI = "mongodb+srv://balu:balu@transetu.1brfef0.mongodb.net/?appName=Transetu";
 
   mongoose
     .connect(MONGO_URI, {

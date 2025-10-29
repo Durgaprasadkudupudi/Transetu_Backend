@@ -5,15 +5,14 @@ const connectDB = async () => {
     const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/transetu_exercises";
     
     const options = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
     };
 
     if (process.env.NODE_ENV === 'production') {
-      options.ssl = true;
-      options.sslValidate = true;
+      // MongoDB Atlas URLs already include SSL by default
+      // Just ensure the connection string has ssl=true if needed
+      console.log('Connecting to MongoDB in production mode...');
     }
 
     await mongoose.connect(MONGO_URI, options);

@@ -1,8 +1,31 @@
 const path = require('path');
 const User = require("../models/usermodel");
-// Resolve validation schema relative to the controller file so it works
-// when the service root differs (Render may use Backend as project root).
-const userValidationSchema = require(path.join(__dirname, '..', '..', 'Validations', 'UserValidation'));
+
+// Attempt to require the validation schema from several likely locations.
+// Different environments (local, Render, Vercel) may set a different working
+// directory or root, so try a few candidate paths and fail with a helpful
+// error listing what was attempted.
+let userValidationSchema = null;
+const candidates = [
+  path.join(__dirname, '..', '..', 'Validations', 'UserValidation'), // Backend/controllers -> repo/Validations
+  path.join(__dirname, '..', 'Validations', 'UserValidation'), // Backend/controllers -> Backend/Validations (if placed there)
+  path.join(process.cwd(), 'Validations', 'UserValidation'), // project root Validations
+  path.join(process.cwd(), 'Backend', 'Validations', 'UserValidation') // repo root -> Backend/Validations
+];
+
+for (const p of candidates) {
+  try {
+    userValidationSchema = require(p);
+    break;
+  } catch (err) {
+    // ignore and try next
+  }
+}
+
+if (!userValidationSchema) {
+  const tried = candidates.map(p => `"${p}"`).join(', ');
+  throw new Error(`Could not load Validations/UserValidation. Tried: ${tried}`);
+}
 
 // ✅ Get all users
 exports.getAllUsers = (req, res) => {
